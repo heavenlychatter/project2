@@ -24,6 +24,5 @@ def makeAlphaVantageRequest(function: str, **kwargs) -> dict[str, any] | None: #
         print(f"An error occurred while making the request: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-
-
+    return None
     
