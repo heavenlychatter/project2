@@ -29,17 +29,20 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
     chart = pygal.Line(title=f"{symbol} {time_series.value} from {beginning_date} to {end_date}")
     data = parseStockEntryKeys(filtered_data)
     
+    dates = []
     opens = []
     highs = []
     lows = []
     closes = []
     
     for entry in data:
+        dates.append(entry.get("date"))
         opens.append(entry.get("open"))
         highs.append(entry.get("high"))
         lows.append(entry.get("low"))
         closes.append(entry.get("close"))
 
+    chart.x_labels = dates
     chart.add("Open", opens)
     chart.add("High", highs)
     chart.add("Low", lows)
