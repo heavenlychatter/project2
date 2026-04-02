@@ -1,6 +1,40 @@
+from time import time
 from models import chart_types, time_series
+from functions.utilFunctions import compareDates, filterDataByDate
+from functions.httpFunctions import makeAlphaVantageRequest
+import pygal
 
 def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: time_series.TimeSeries, beginning_date: str, end_date: str) -> None:
-    pass
+    date_verified = compareDates(beginning_date, end_date)
+    if date_verified == 1:
+        print("Error: Beginning date must be earlier than end date.")
+        return
+        
+    request = makeAlphaVantageRequest(function=time_series.value, symbol=symbol)
+    if not request:
+        print("Error: Failed to retrieve data from AlphaVantage.")
+        return
+        
+    key = list(request.keys())[-1] # this is required since the value of the time series key changes based on the type of time series requested
+    
+    
+    
+    raw_data = request.get(key, {})
+    if not raw_data:
+        print("Error: No data found for the specified time series.")
+        return
+        
+    filtered_data = filterDataByDate(raw_data, beginning_date, end_date)
+    if not filtered_data:
+        print("Error: No data found for the specified date range.")
+        return
+        
+    chart = pygal.Line(title=f"{symbol} {chart_type.value} from {beginning_date} to {end_date}")
+    for date, data in filtered_data.items():
+        chart.add(date, float(data.get("4. close", 0))) # this is required since the key for the closing price changes based on the type of time series requested
+    
+    chart.render_in_browser()
+    
+
 
 
