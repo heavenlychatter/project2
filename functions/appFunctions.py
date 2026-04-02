@@ -2,7 +2,7 @@ import logging
 import os
 
 def getAlphaAdvantageAPIKey(no_prompt: bool = False) -> str:
-    api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+    api_key = "AYARIRSQKP25QIL1"
     if not api_key:
         try:
             if no_prompt:
