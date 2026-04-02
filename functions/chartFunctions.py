@@ -25,8 +25,16 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
     if not filtered_data:
         print("Error: No data found for the specified date range.")
         return
+    
+    if chart_type == chart_types.ChartTypes.LINE:
+        chart_class = pygal.Line
+    elif chart_type == chart_types.ChartTypes.BAR:
+        chart_class = pygal.Bar
+    else:
+        print("Error: Invalid chart type specified.")
+        return
         
-    chart = pygal.Line(title=f"{symbol} {time_series.value} from {beginning_date} to {end_date}")
+    chart = chart_class(title=f"{symbol} {time_series.value} from {beginning_date} to {end_date}")
     data = parseStockEntryKeys(filtered_data)
     
     opens = []
