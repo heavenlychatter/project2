@@ -1,5 +1,3 @@
-from io import open_code
-import json
 from models import chart_types, time_series
 from functions.utilFunctions import compareDates, filterDataByDate, parseStockEntryKeys
 from functions.httpFunctions import makeAlphaVantageRequest
@@ -18,8 +16,6 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
         
     key = list(request.keys())[-1] # this is required since the value of the time series key changes based on the type of time series requested
     
-    
-    
     raw_data = request.get(key, {})
     if not raw_data:
         print("Error: No data found for the specified time series.")
@@ -30,24 +26,23 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
         print("Error: No data found for the specified date range.")
         return
         
-    with open(f"test.json", "w") as f:
-        json.dump(filtered_data, f)
-        
-    chart = pygal.Line(title=f"{symbol} {chart_type.value} from {beginning_date} to {end_date}")
+    chart = pygal.Line(title=f"{symbol} {time_series.value} from {beginning_date} to {end_date}")
     data = parseStockEntryKeys(filtered_data)
-    print(data[0])
-    open_code = [entry.get("open") for entry in data]
-    high_code = [entry.get("high") for entry in data]
-    low_code = [entry.get("low") for entry in data]
-    close_code = [entry.get("close") for entry in data]
+    
+    opens = []
+    highs = []
+    lows = []
+    closes = []
+    
+    for entry in data:
+        opens.append(entry.get("open"))
+        highs.append(entry.get("high"))
+        lows.append(entry.get("low"))
+        closes.append(entry.get("close"))
 
-    chart.add("Open", open_code)
-    chart.add("High", high_code)
-    chart.add("Low", low_code)
-    chart.add("Close", close_code)
+    chart.add("Open", opens)
+    chart.add("High", highs)
+    chart.add("Low", lows)
+    chart.add("Close", closes)
 
     chart.render_in_browser()
-    
-
-
-
