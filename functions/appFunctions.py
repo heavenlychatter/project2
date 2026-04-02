@@ -1,8 +1,11 @@
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def getAlphaAdvantageAPIKey(no_prompt: bool = False) -> str:
-    api_key = "AYARIRSQKP25QIL1"
+    api_key = os.getenv('API_KEY')
     if not api_key:
         try:
             if no_prompt:
