@@ -2,29 +2,38 @@ from models import chart_types, time_series
 from functions.utilFunctions import compareDates, filterDataByDate, parseStockEntryKeys
 from functions.httpFunctions import makeAlphaVantageRequest
 import pygal
+import json
 
 def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: time_series.TimeSeries, beginning_date: str, end_date: str) -> None:
     date_verified = compareDates(beginning_date, end_date)
     if date_verified == 1:
         print("Error: Beginning date must be earlier than end date.")
         return
-        
-    request = makeAlphaVantageRequest(function=time_series.value, symbol=symbol)
-    if not request:
-        print("Error: Failed to retrieve data from AlphaVantage.")
-        return
-        
-    key = list(request.keys())[-1] # this is required since the value of the time series key changes based on the type of time series requested
     
-    raw_data = request.get(key, {})
-    if not raw_data:
-        print("Error: No data found for the specified time series.")
-        return
+    # BEFORE SUBMITTING, UNCOMMENT START HERE, DELETE THIS COMMENT
+    # request = makeAlphaVantageRequest(function=time_series.value, symbol=symbol)
+    # if not request:
+    #     print("Error: Failed to retrieve data from AlphaVantage.")
+    #     return
         
-    filtered_data = filterDataByDate(raw_data, beginning_date, end_date)
-    if not filtered_data:
-        print("Error: No data found for the specified date range.")
-        return
+    # key = list(request.keys())[-1] # this is required since the value of the time series key changes based on the type of time series requested
+    
+    # raw_data = request.get(key, {})
+    # if not raw_data:
+    #     print("Error: No data found for the specified time series.")
+    #     return
+        
+    # filtered_data = filterDataByDate(raw_data, beginning_date, end_date)
+    # if not filtered_data:
+    #     print("Error: No data found for the specified date range.")
+    #     return
+    # BEFORE SUBMITTING, UNCOMMENT END HERE, DELETE THIS COMMENT
+    
+    # BEFORE SUBMITTING, COMMENT OUT START HERE, DELETE THIS COMMENT
+    with open("test.json", "r") as f:
+        filtered_data = json.load(f)
+    # BEFORE SUBMITTING, COMMENT OUT END HERE, DELETE THIS COMMENT
+    
     
     if chart_type == chart_types.ChartTypes.LINE:
         chart_class = pygal.Line
