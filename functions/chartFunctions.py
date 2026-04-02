@@ -1,6 +1,7 @@
-from time import time
+from io import open_code
+import json
 from models import chart_types, time_series
-from functions.utilFunctions import compareDates, filterDataByDate
+from functions.utilFunctions import compareDates, filterDataByDate, parseStockEntryKeys
 from functions.httpFunctions import makeAlphaVantageRequest
 import pygal
 
@@ -29,10 +30,22 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
         print("Error: No data found for the specified date range.")
         return
         
+    with open(f"test.json", "w") as f:
+        json.dump(filtered_data, f)
+        
     chart = pygal.Line(title=f"{symbol} {chart_type.value} from {beginning_date} to {end_date}")
-    for date, data in filtered_data.items():
-        chart.add(date, float(data.get("4. close", 0))) # this is required since the key for the closing price changes based on the type of time series requested
-    
+    data = parseStockEntryKeys(filtered_data)
+    print(data[0])
+    open_code = [entry.get("open") for entry in data]
+    high_code = [entry.get("high") for entry in data]
+    low_code = [entry.get("low") for entry in data]
+    close_code = [entry.get("close") for entry in data]
+
+    chart.add("Open", open_code)
+    chart.add("High", high_code)
+    chart.add("Low", low_code)
+    chart.add("Close", close_code)
+
     chart.render_in_browser()
     
 

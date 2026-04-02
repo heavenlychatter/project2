@@ -23,4 +23,20 @@ def compareDates(date_str1: str, date_str2: str) -> int:
 def filterDataByDate(data: dict[str, any], beginning_date: str, end_date: str) -> dict[str, any]:
     # filters the data dictionary to only include entries between the beginning and end dates (inclusive)
     return data
+    
+def parseStockEntryKeys(data: dict[str, any]) -> list[dict[str, any]]:
+    
+    parsed_data = []
+    for date, entry in data.items():
+        parsed_entry = {
+            "date": date,
+            "open": float(entry.get("1. open", 0)),
+            "high": float(entry.get("2. high", 0)),
+            "low": float(entry.get("3. low", 0)),
+            "close": float(entry.get("4. close", 0)),
+            "volume": float(entry.get("5. volume", 0))
+        }
+        parsed_data.append(parsed_entry)
+    return parsed_data
         
+    
