@@ -44,5 +44,9 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
     chart.add("High", highs)
     chart.add("Low", lows)
     chart.add("Close", closes)
-
-    chart.render_in_browser()
+    
+    try:
+        chart.render_in_browser()
+    except Exception as e:
+        print(f"An error occurred while rendering the chart in the browser: {e}")
+    
