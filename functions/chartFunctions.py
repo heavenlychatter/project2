@@ -33,10 +33,7 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
     if not filtered_data:
         print("Error: No data found for the specified date range.")
         return
-    
 
-    
-    
     if chart_type == chart_types.ChartTypes.LINE:
         chart_class = pygal.Line
     elif chart_type == chart_types.ChartTypes.BAR:

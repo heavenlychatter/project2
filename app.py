@@ -6,7 +6,6 @@ from models.time_series import TimeSeries
 import pygal
 import requests
 from lxml import etree
-from datetime import datetime
 import webbrowser
 import os
 
