@@ -9,6 +9,10 @@ import os
 
 def displayPrompts():
 
+    chartInvalid = True
+    timeSeriesInvalid = True
+    datesInvalid = True
+
     print('Stock Data Visualizer\n---------------------------')
     stock = input('\nEnter the stock symbol you are looking for: ')
     

@@ -1,3 +1,5 @@
 httpx
 pygal
 lxml
+dotenv
+requests
