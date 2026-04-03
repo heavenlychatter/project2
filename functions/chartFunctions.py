@@ -22,10 +22,11 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
         
     key = list(request.keys())[-1] # this is required since the value of the time series key changes based on the type of time series requested
     
-    with open(testPath, "r") as f: # delete after testing w/json
-        raw_data = json.load(f) # request.get(key, {})
-    if not raw_data:
-        print("Error: No data found for the specified time series.")
+    # with open(testPath, "r") as f: # delete after testing w/json
+    
+    raw_data = request.get(key, {}) # raw_data = json.load(f) 
+    if not raw_data or not isinstance(raw_data, dict):
+        print("Error: Invalid stock symbol or no data found for the specified time series.")
         return
         
     filtered_data = filterDataByDate(raw_data, beginning_date, end_date)
