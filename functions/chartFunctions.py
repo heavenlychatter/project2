@@ -3,6 +3,11 @@ from functions.utilFunctions import compareDates, filterDataByDate, parseStockEn
 from functions.httpFunctions import makeAlphaVantageRequest
 import pygal
 import json
+import os
+
+functions = os.path.dirname(os.path.abspath(__file__))
+repoRoot = os.path.dirname(functions)
+testPath = os.path.join(repoRoot, "test.json")
 
 def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: time_series.TimeSeries, beginning_date: str, end_date: str) -> None:
     date_verified = compareDates(beginning_date, end_date)
@@ -30,7 +35,7 @@ def generateChart(symbol: str, chart_type: chart_types.ChartTypes, time_series: 
     # BEFORE SUBMITTING, UNCOMMENT END HERE, DELETE THIS COMMENT
     
     # BEFORE SUBMITTING, COMMENT OUT START HERE, DELETE THIS COMMENT
-    with open("test.json", "r") as f:
+    with open(testPath, "r") as f:
         filtered_data = json.load(f)
     # BEFORE SUBMITTING, COMMENT OUT END HERE, DELETE THIS COMMENT
     
